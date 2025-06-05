@@ -1,0 +1,26 @@
+{
+  "name": "identity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only --project tsconfig.json ./src/index.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.15.17"
+  },
+  "dependencies": {
+    "@konnected/types": "workspace:^",
+    "@prisma/client": "^6.7.0",
+    "bcrypt": "^5.1.1",
+    "fastify": "^5.3.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

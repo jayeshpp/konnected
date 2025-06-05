@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: identity
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # base:
+  #   build:
+  #     context: .
+  #     dockerfile: ./infra/docker/Dockerfile.base
+  #   image: konnected-base
+  #   command: echo "Base image built"
+
+  identity-service:
+    build:
+      context: .
+      dockerfile: ./services/identity/Dockerfile
+    image: identity-service
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/identity
+      JWT_SECRET: supersecretdev
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+
+  # supabase-webhook:
+  #   build: ./supabase-webhooks
+  #   environment:
+  #     DATABASE_URL: postgres://postgres:password@postgres:5432/identity
+  #   ports:
+  #     - '5002:5002'
+  #   depends_on:
+  #     - postgres
+
+volumes:
+  pg_data:
