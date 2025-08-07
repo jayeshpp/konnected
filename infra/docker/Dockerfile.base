@@ -1,22 +1,44 @@
-# docker/Dockerfile.base
-FROM node:20-alpine
+# Dockerfile.base
+# This multi-stage Dockerfile handles common pnpm dependency installation
+# and initial build of shared packages for the monorepo.
 
-# Enable corepack and prepare pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Stage 1: Base builder for all services/apps
+FROM node:20-alpine AS base
 
-# Create app directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy lockfile and root package.json for workspace install
-COPY pnpm-lock.yaml package.json ./
+# Copy pnpm related configuration files first to leverage Docker cache
+# These files define the monorepo structure and dependencies
+COPY pnpm-lock.yaml ./
+COPY package.json ./
+COPY pnpm-workspace.yaml ./
 
-# Copy the full monorepo (including apps, services, and packages)
-COPY apps ./apps
-COPY services ./services
-COPY packages ./packages
+# Copy all package.json files from apps, packages, and services directories.
+# This is crucial for pnpm to correctly understand and resolve all workspace dependencies
+# before installing them.
+COPY apps/*/package.json ./apps/
+COPY packages/*/package.json ./packages/
+COPY services/*/package.json ./services/
 
-# Install all workspace dependencies
-RUN pnpm install
+# Install pnpm globally and then install all monorepo dependencies.
+# `pnpm fetch --prod` fetches all dependencies needed for production,
+# which is good for a base build stage.
+RUN npm install -g pnpm && pnpm fetch --prod
 
-# Default working directory (can be overridden later)
-WORKDIR /app
+# Copy the entire monorepo source code into the builder stage.
+# This includes all apps, packages, and services.
+COPY . .
+
+# IMPORTANT: Run prisma generate here to create the client before building the service.
+# This assumes 'prisma' is a dependency of your '@konnected/database' package.
+# If 'prisma' is a root dependency or in a different package, adjust the filter.
+RUN pnpm --filter @konnected/database prisma db:generate
+
+
+# Build all shared packages first.
+# This assumes that each package in your `packages` directory has a `build` script
+# defined in its `package.json`. Adjust the filter if your package names are different.
+# For example, if you have `@konnected/database`, `@konnected/ts-config`, `@konnected/types`
+# in your `packages` directory, this command will build them.
+RUN pnpm --filter "./packages/*" build

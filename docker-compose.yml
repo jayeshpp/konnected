@@ -1,43 +1,140 @@
 services:
+  # -------------------------------------------------------------------------
+  # Database Service
+  # -------------------------------------------------------------------------
   postgres:
-    image: postgres:15
+    image: postgres:16-alpine # Use a lightweight PostgreSQL image
+    restart: always # Always restart the container if it stops
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: identity
-    volumes:
-      - pg_data:/var/lib/postgresql/data
+      # Environment variables for PostgreSQL setup
+      POSTGRES_DB: konnected_db # Database name
+      POSTGRES_USER: user # Database user
+      POSTGRES_PASSWORD: password # Database password
     ports:
-      - "5432:5432"
+      # Map container port 5432 to host port 5432, allowing external access
+      - "5433:5432"
+    volumes:
+      # Persist PostgreSQL data to a named volume, so data is not lost on container removal
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # Define a health check to ensure the database is ready before other services start
+      test: ["CMD-SHELL", "pg_isready -U user -d konnected_db"]
+      interval: 5s # Check every 5 seconds
+      timeout: 5s # Timeout after 5 seconds
+      retries: 5 # Retry 5 times before marking as unhealthy
 
-  # base:
-  #   build:
-  #     context: .
-  #     dockerfile: ./infra/docker/Dockerfile.base
-  #   image: konnected-base
-  #   command: echo "Base image built"
+  # -------------------------------------------------------------------------
+  # Backend Services
+  # -------------------------------------------------------------------------
 
-  identity-service:
+  identity:
+    build:
+      context: . # The build context is the monorepo root (where Dockerfile.base is)
+      dockerfile: services/identity/Dockerfile # Path to the specific Dockerfile for identity
+    ports:
+      - "5001:5001" # Map container port 3001 to host port 3001
+    environment:
+      # Environment variables for the identity service
+      DATABASE_URL: ${DATABASE_URL} # Connect to the postgres service
+      # Add other environment variables required by your identity service (e.g., JWT_SECRET, API_KEY)
+      # JWT_SECRET: your_jwt_secret
+    depends_on:
+      # Ensure postgres is healthy before starting identity service
+      postgres:
+        condition: service_healthy
+    # Uncomment the following for local development with hot-reloading (if your service supports it)
+    volumes:
+      - .:/app # Mount the entire monorepo source code into the container
+    command: "pnpm --filter @konnected/identity dev"
+
+  supabase-webhooks:
     build:
       context: .
-      dockerfile: ./services/identity/Dockerfile
-    image: identity-service
-    environment:
-      DATABASE_URL: postgres://postgres:password@postgres:5432/identity
-      JWT_SECRET: supersecretdev
+      dockerfile: services/supabase-webhooks/Dockerfile
     ports:
-      - "5001:5001"
+      - "5002:5002"
+    environment:
+      # Add Supabase specific environment variables
+      SUPABASE_WEBHOOK_SECRET: your_supabase_webhook_secret # Replace with your actual secret
+      # SUPABASE_URL: https://your-project.supabase.co # If connecting to a remote Supabase
+      # SUPABASE_SERVICE_ROLE_KEY: your_service_role_key
     depends_on:
-      - postgres
+      # Assuming it might depend on identity or other services
+      identity:
+        condition: service_started
+    # volumes:
+    #   - .:/app
 
-  # supabase-webhook:
-  #   build: ./supabase-webhooks
-  #   environment:
-  #     DATABASE_URL: postgres://postgres:password@postgres:5432/identity
+  # event:
+  #   build:
+  #     context: .
+  #     dockerfile: services/event/Dockerfile
   #   ports:
-  #     - '5002:5002'
+  #     - "3003:3003"
+  #   environment:
+  #     DATABASE_URL: postgres://user:password@postgres:5432/riding_club_db
+  #     # Add other environment variables for the event service
   #   depends_on:
-  #     - postgres
+  #     postgres:
+  #       condition: service_healthy
+  #     identity:
+  #       condition: service_started # Ensure identity is started before event service
+  # volumes:
+  #   - .:/app
 
+  # post:
+  #   build:
+  #     context: .
+  #     dockerfile: services/post/Dockerfile
+  #   ports:
+  #     - "3004:3004"
+  #   environment:
+  #     DATABASE_URL: postgres://user:password@postgres:5432/riding_club_db
+  #     # Add other environment variables for the post service
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     identity:
+  #       condition: service_started
+  # volumes:
+  #   - .:/app
+
+  # -------------------------------------------------------------------------
+  # Frontend Applications (served by Nginx)
+  # -------------------------------------------------------------------------
+
+  # dashboard:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/dashboard/Dockerfile
+  #   ports:
+  #     - "80:80" # Map host port 80 to container port 80 (for dashboard)
+  #   depends_on:
+  #     # Frontend apps depend on backend services being available
+  #     identity:
+  #       condition: service_started
+  #     event:
+  #       condition: service_started
+  #     post:
+  #       condition: service_started
+
+  # react-hybrid-app:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/react-hybrid-app/Dockerfile
+  #   ports:
+  #     - "3000:80" # Map host port 3000 to container port 80 (for react-hybrid-app)
+  #   depends_on:
+  #     identity:
+  #       condition: service_started
+  #     event:
+  #       condition: service_started
+  #     post:
+  #       condition: service_started
+
+# -------------------------------------------------------------------------
+# Volumes
+# -------------------------------------------------------------------------
 volumes:
-  pg_data:
+  # Define a named volume for PostgreSQL data persistence
+  postgres_data:

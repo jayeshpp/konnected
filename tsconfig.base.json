@@ -8,8 +8,11 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "outDir": "dist"
-  },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+    "baseUrl": ".",
+    "paths": {
+      "@konnected/libs": ["packages/libs/src"],
+      "@konnected/types": ["packages/types/src"],
+      "@konnected/config": ["packages/config/src"]
+    }
+  }
 }

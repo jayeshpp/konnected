@@ -10,7 +10,10 @@
     "format": "prettier --write \"services/**/*.{ts,tsx,js,json,md}\"",
     "lint:fix": "eslint \"services/**/*.{ts,tsx}\" --fix",
     "prettier": "prettier --check \"services/**/*.{ts,tsx,js,json,md}\"",
-    "prettier:fix": "prettier --write \"services/**/*.{ts,tsx,js,json,md}\""
+    "prettier:fix": "prettier --write \"services/**/*.{ts,tsx,js,json,md}\"",
+    "build": "tsc --build",
+    "build:clean": "tsc --build --clean",
+    "build:types": "pnpm --filter \"@konnected/types\" build"
   },
   "keywords": [],
   "author": "",

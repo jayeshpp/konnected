@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/client"
+  binaryTargets = ["native", "darwin-arm64", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String   @unique // e.g., "Acme Corp Community", "My Gaming Guild"
+  slug      String   @unique // Unique identifier for URLs/headers, e.g., "acmecorp", "gaming-guild"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       User[]
+  roles       Role[]
+  permissions Permission[]
+  invitations Invitation[]
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String // Store hashed passwords, NEVER plain text
+  name          String?
+  isActive      Boolean        @default(true)
+  emailVerified Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  // Relationships
+  roles         UserRole[] // Junction table for many-to-many relationship with Role
+  refreshTokens RefreshToken[] // Store refresh tokens for invalidation
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+
+  invitedBy Invitation[] @relation("InvitedByUser")
+
+  @@unique([email, tenantId]) // Email is unique PER TENANT
+}
+
+model Invitation {
+  id              String           @id @default(cuid())
+  email           String
+  tenantId        String
+  tenant          Tenant           @relation(fields: [tenantId], references: [id])
+  token           String           @unique // The unique token sent in the invitation link
+  expiresAt       DateTime
+  invitedByUserId String? // Optional: Track who sent the invite
+  invitedByUser   User?            @relation("InvitedByUser", fields: [invitedByUserId], references: [id])
+  status          InvitationStatus @default(PENDING) // PENDING, ACCEPTED, EXPIRED, CANCELLED
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // An invitation is unique per email within a tenant
+  @@unique([email, tenantId])
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  CANCELLED
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique // e.g., "admin", "member", "crew"
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  // Relationships
+  users       UserRole[] // Junction table for many-to-many relationship with User
+  permissions RolePermission[] // Junction table for many-to-many relationship with Permission
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+
+  // Ensure role name is unique PER TENANT
+  @@unique([name, tenantId])
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  name        String           @unique // e.g., "user:read", "user:write", "post:delete"
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  // Relationships
+  roles       RolePermission[] // Junction table for many-to-many relationship with Role
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+
+  // Ensure permission name is unique PER TENANT
+  @@unique([name, tenantId])
+}
+
+// Junction table for User to Role (Many-to-Many)
+model UserRole {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId     String
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  assignedAt DateTime @default(now())
+
+  @@unique([userId, roleId]) // A user can only have a specific role once
+}
+
+// Junction table for Role to Permission (Many-to-Many)
+model RolePermission {
+  id           String     @id @default(cuid())
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  assignedAt   DateTime   @default(now())
+
+  @@unique([roleId, permissionId]) // A role can only have a specific permission once
+}
+
+// Model to store and invalidate refresh tokens
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // You might add fields like `ipAddress`, `userAgent` for security auditing
+}

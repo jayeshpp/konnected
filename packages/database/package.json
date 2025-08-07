@@ -1,0 +1,32 @@
+{
+  "name": "@konnected/database",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:generate": "prisma generate --no-engine",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "format": "npx prisma format",
+    "build": "prisma generate && tsc && cp -r generated dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "prisma": "catalog:prisma",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@fastify/jwt": "^9.1.0",
+    "@prisma/client": "6.11.1",
+    "@prisma/extension-accelerate": "^2.0.2",
+    "dotenv": "^17.2.1"
+  }
+}
