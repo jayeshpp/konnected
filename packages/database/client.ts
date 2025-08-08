@@ -5,7 +5,6 @@ import path from "path";
 import fs from "fs";
 
 const envFilePath = path.resolve(__dirname, ".env");
-console.log({ envFilePath }, "=====+++++");
 
 if (fs.existsSync(envFilePath)) {
   dotenv.config({ path: envFilePath });
@@ -14,7 +13,6 @@ if (fs.existsSync(envFilePath)) {
     "⚠️ .env file not found at " + envFilePath + ". Falling back to environment variables.",
   );
 }
-console.log("DB URL:", process.env.DATABASE_URL);
 
 // Instantiate the extended Prisma client to infer its type
 const extendedPrisma = new PrismaClient().$extends(withAccelerate());

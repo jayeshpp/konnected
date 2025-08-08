@@ -4,6 +4,10 @@ import "@fastify/jwt";
 import { JWT } from "@fastify/jwt";
 
 declare module "@fastify/jwt" {
+  interface FastifyJWT {
+    payload: AuthenticatedUser;
+    user: AuthenticatedUser;
+  }
   interface FastifyJWTPayload extends AuthenticatedUser {}
 }
 
@@ -17,8 +21,7 @@ declare const fastifyTypeProviderDefault: unique symbol;
 declare module "fastify" {
   interface FastifyRequest {
     tenantId?: string;
-    //user: AuthenticatedUser;
-    //jwtVerify: () => Promise<void>;
+    user: AuthenticatedUser;
   }
 
   // Extend FastifyInstance to include the decorated methods

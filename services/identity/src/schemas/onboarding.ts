@@ -15,9 +15,21 @@ export const registerOrganizationSchema = z
   })
   .describe("RegisterOrganizationRequestBody");
 
+export const registerOrganizationResponseSchema = z
+  .object({
+    message: z
+      .literal("Organization registered successfully. Admin user created.")
+      .describe("Confirmation message"),
+    tenantId: z.string().uuid().describe("The UUID of the newly created tenant"),
+    adminUserId: z.string().uuid().describe("The UUID of the created admin user"),
+    accessToken: z.string().describe("JWT access token for the admin user"),
+    refreshToken: z.string().describe("JWT refresh token for the admin user"),
+  })
+  .describe("RegisterOrganizationResponse");
 export const { schemas: onboardingSchemas, $ref } = buildJsonSchemas(
   {
     registerOrganizationSchema,
+    registerOrganizationResponseSchema,
   },
   {
     $id: "onboardingSchemas",

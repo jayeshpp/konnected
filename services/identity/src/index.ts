@@ -1,13 +1,21 @@
 import Fastify from "fastify";
 //import authRoutes from "./routes/auth";
-//import adminRoutes from "./routes/admin";
+import adminRoutes from "./routes/admin";
 import onboardingRoutes from "./routes/onboarding";
 import { authMiddleware, tenantIdentifierMiddleware } from "@konnected/middlewares";
 import fastifyJwt from "@fastify/jwt";
 import { config } from "@konnected/config";
 import { onboardingSchemas } from "./schemas/onboarding";
+import { adminSchemas } from "./schemas/admin";
+import { setupSwagger } from "@konnected/libs";
 
 const app = Fastify({ logger: true });
+
+setupSwagger(app, {
+  title: "Identity Service API",
+  description: "API docs for Identity Service",
+  version: "1.0.0",
+});
 
 app.addHook("preHandler", (req, reply, done) => {
   console.log("Headers:", req.headers);
@@ -16,7 +24,7 @@ app.addHook("preHandler", (req, reply, done) => {
 });
 
 // Register all schemas at the top level
-for (const schema of onboardingSchemas) {
+for (const schema of [...adminSchemas, ...onboardingSchemas]) {
   app.addSchema(schema);
 }
 
@@ -35,7 +43,7 @@ app.register(async (fastify) => {
     async (tenantScopedFastify) => {
       tenantScopedFastify.addHook("preHandler", tenantIdentifierMiddleware);
       //tenantScopedFastify.register(authRoutes, { prefix: "/api/v1/auth" });
-      //tenantScopedFastify.register(adminRoutes, { prefix: "/api/v1/admin" });
+      tenantScopedFastify.register(adminRoutes, { prefix: "/api/v1/admin" });
     },
     { prefix: "/api/v1" },
   );

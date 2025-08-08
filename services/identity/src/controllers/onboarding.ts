@@ -10,11 +10,6 @@ export const registerOrganization = async (
   reply: FastifyReply,
 ) => {
   try {
-    /* const result = registerOrganizationSchema.safeParse(req.body);
-    if (!result.success) {
-      return reply.status(400).send({ errors: result.error.flatten((issue) => issue.message) });
-    } */
-
     const { organizationName, organizationSlug, adminEmail, adminPassword, adminName } = req.body;
 
     // 1. Validate organization slug uniqueness

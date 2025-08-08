@@ -10,7 +10,13 @@ const onboardingRoutes: FastifyPluginAsync = async (app) => {
     "/register-organization",
     {
       schema: {
+        tags: ["Onboarding"],
+        summary: "Register a new organization and admin user",
         body: $ref("registerOrganizationSchema"),
+        response: {
+          200: $ref("registerOrganizationResponseSchema"),
+        },
+        security: [],
       },
     },
     registerOrganization,
