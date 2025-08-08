@@ -44,7 +44,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["User"],
         summary: "Get all users",
       },
     },
@@ -55,7 +55,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/:id",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["User"],
         summary: "Get user by ID",
         params: $ref("userIdParamsSchema"),
       },
@@ -67,7 +67,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["User"],
         summary: "Create a new admin user",
         body: $ref("adminCreateUserSchema"),
       },
@@ -79,7 +79,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/invite",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["User"],
         summary: "Invite a user via email",
         body: $ref("inviteUserSchema"),
       },
@@ -91,7 +91,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/:id",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["User"],
         summary: "Update user details",
         params: $ref("userIdParamsSchema"),
         body: $ref("userUpdateBodySchema"),
@@ -104,7 +104,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/:id",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["User"],
         summary: "Delete user by ID",
         params: $ref("userIdParamsSchema"),
       },
@@ -116,7 +116,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/:userId/roles",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Role"],
         summary: "Assign roles to a user",
         params: $ref("userIdParamsSchema"),
         body: $ref("assignRolesBodySchema"),
@@ -129,7 +129,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/:userId/roles/:roleId",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Role"],
         summary: "Revoke a role from a user",
         params: $ref("userRoleParamsSchema"),
       },
@@ -142,7 +142,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/roles",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Role"],
         summary: "Get all roles",
       },
     },
@@ -153,7 +153,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/roles",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Role"],
         summary: "Create a new role",
         body: $ref("createRoleBodySchema"),
       },
@@ -165,7 +165,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/roles/:id",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Role"],
         summary: "Update role by ID",
         params: $ref("roleIdParamsSchema"),
         body: $ref("updateRoleBodySchema"),
@@ -178,7 +178,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/roles/:id",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Role"],
         summary: "Delete role by ID",
         params: $ref("roleIdParamsSchema"),
       },
@@ -191,7 +191,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/permissions",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Permission"],
         summary: "Get all permissions",
       },
     },
@@ -202,7 +202,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/permissions",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Permission"],
         summary: "Create a new permission",
         body: $ref("createPermissionBodySchema"),
       },
@@ -214,7 +214,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/permissions/:id",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Permission"],
         summary: "Delete permission by ID",
         params: $ref("permissionIdParamsSchema"),
       },
@@ -226,7 +226,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/roles/:roleId/permissions",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Permission"],
         summary: "Assign permissions to a role",
         params: $ref("roleIdParamsSchema"),
         body: $ref("assignPermissionsBodySchema"),
@@ -239,7 +239,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/roles/:roleId/permissions/:permissionId",
     {
       schema: {
-        tags: ["Admin"],
+        tags: ["Permission"],
         summary: "Revoke a permission from a role",
         params: $ref("rolePermissionParamsSchema"),
       },

@@ -17,6 +17,12 @@ export async function setupSwagger(app: FastifyInstance, options: SwaggerOptions
         description,
         version,
       },
+      tags: [
+        { name: "Onboarding", description: "Onboarding related end-points" },
+        { name: "User", description: "User related end-points" },
+        { name: "Role", description: "Role related end-points" },
+        { name: "Permission", description: "Permission related end-points" },
+      ],
       components: {
         securitySchemes: {
           bearerAuth: {

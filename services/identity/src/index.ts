@@ -43,7 +43,7 @@ app.register(async (fastify) => {
     async (tenantScopedFastify) => {
       tenantScopedFastify.addHook("preHandler", tenantIdentifierMiddleware);
       //tenantScopedFastify.register(authRoutes, { prefix: "/api/v1/auth" });
-      tenantScopedFastify.register(adminRoutes, { prefix: "/api/v1/admin" });
+      tenantScopedFastify.register(adminRoutes, { prefix: "/admin" });
     },
     { prefix: "/api/v1" },
   );
