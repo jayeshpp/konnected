@@ -13,6 +13,7 @@ import {
   PermissionIdParams,
   AssignPermissionsRequestBody,
   RolePermissionParams,
+  $ref,
 } from "@konnected/types";
 import {
   getUsers,
@@ -33,7 +34,6 @@ import {
   assignPermissionsToRole,
   revokePermissionFromRole,
 } from "../controllers/admin";
-import { $ref } from "../schemas/admin";
 
 const adminRoutes: FastifyPluginAsync = async (app) => {
   // All routes here are scoped to the 'admin' role

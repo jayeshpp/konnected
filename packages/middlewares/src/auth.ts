@@ -1,6 +1,12 @@
-import "@fastify/jwt";
 import { verifyAccessTokenFromRequest } from "@konnected/libs";
 import { FastifyReply, FastifyRequest } from "fastify";
+
+//TODO: cleanup
+declare module "fastify" {
+  interface FastifyRequest {
+    tenantId?: string;
+  }
+}
 
 /**
  * Fastify hook for authentication and authorization.
@@ -29,6 +35,7 @@ const authMiddleware = (requiredRoles: string[] = []) => {
           .send({ error: "Unauthorized", message: "Invalid or missing access token." });
         return;
       }
+      console.log(user, tenantId, "===========");
 
       // 2. Crucial for Multi-Tenancy: Verify JWT tenantId matches header tenantId
       // This prevents a user from one tenant using their token to access another tenant's data.

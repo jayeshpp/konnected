@@ -6,5 +6,5 @@
     "composite": true,
     "declaration": true
   },
-  "include": ["src/**/*"]
+  "include": ["src", "../../services/identity/src/types/fastify.ts"]
 }

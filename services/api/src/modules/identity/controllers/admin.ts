@@ -21,7 +21,7 @@ import { nanoid } from "nanoid";
 
 export const getUsers = async (req: FastifyRequest, reply: FastifyReply) => {
   try {
-    const tenantId = req.tenantId as string;
+    const tenantId = req.tenantId;
     const users = await db.user.findMany({
       where: { tenantId },
       select: {

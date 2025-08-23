@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Identity Service (Development)",
+      "skipFiles": ["<node_internals>/**"],
+      // Point to the ts-node-dev executable
+      "runtimeExecutable": "pnpm", // Or "npm" or "yarn" depending on your package manager
+      "runtimeArgs": [
+        "run",
+        "dev" // This will execute the "dev" script from services/identity/package.json
+      ],
+      // Working directory for the Node.js process (important for pnpm run dev)
+      "cwd": "${workspaceFolder}/services/identity",
+      // Environment variables for the debug session
+      "env": {
+        "NODE_ENV": "development",
+        "DATABASE_URL": "postgresql://user:password@localhost:5432/your_database_name?schema=public",
+        "ACCESS_TOKEN_SECRET": "your_access_token_secret",
+        "REFRESH_TOKEN_SECRET": "your_refresh_token_secret"
+        // Add any other environment variables your identity service needs
+      },
+      "restart": true,
+      "sourceMaps": true, // Essential for mapping breakpoints back to TS files
+      "protocol": "inspector" // Modern debugging protocol
+    }
+  ]
+}

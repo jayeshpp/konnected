@@ -1,19 +1,18 @@
 import Fastify from "fastify";
-//import authRoutes from "./routes/auth";
-import adminRoutes from "./routes/admin";
-import onboardingRoutes from "./routes/onboarding";
 import { authMiddleware, tenantIdentifierMiddleware } from "@konnected/middlewares";
 import fastifyJwt from "@fastify/jwt";
 import { config } from "@konnected/config";
-import { onboardingSchemas } from "./schemas/onboarding";
-import { adminSchemas } from "./schemas/admin";
 import { setupSwagger } from "@konnected/libs";
+import authRoutes from "./modules/identity/routes/auth";
+import { allSchemas } from "@konnected/types";
+import onboardingRoutes from "./modules/identity/routes/onboarding";
+import adminRoutes from "./modules/identity/routes/admin";
 
 const app = Fastify({ logger: true });
 
 setupSwagger(app, {
-  title: "Identity Service API",
-  description: "API docs for Identity Service",
+  title: "Konnected Platform API",
+  description: "API docs for Konnected Platform Services",
   version: "1.0.0",
 });
 
@@ -23,32 +22,43 @@ app.addHook("preHandler", (req, reply, done) => {
   done();
 });
 
+app.addHook("onRequest", async (request) => {
+  console.log("Tenant ID:", request.headers["x-tenant-id"]);
+});
+
 // Register all schemas at the top level
-for (const schema of [...adminSchemas, ...onboardingSchemas]) {
+for (const schema of [...allSchemas]) {
   app.addSchema(schema);
 }
 
-app.register(async (fastify) => {
-  await fastify.register(fastifyJwt, {
-    secret: {
-      private: config.ACCESS_TOKEN_SECRET,
-      public: config.ACCESS_TOKEN_SECRET,
-    },
-  });
+app.register(fastifyJwt, {
+  secret: {
+    private: config.ACCESS_TOKEN_SECRET,
+    public: config.ACCESS_TOKEN_SECRET,
+  },
+});
 
+app.register(async (fastify) => {
   fastify.decorate("authenticate", authMiddleware());
   fastify.decorate("authorize", authMiddleware);
 
   fastify.register(
     async (tenantScopedFastify) => {
       tenantScopedFastify.addHook("preHandler", tenantIdentifierMiddleware);
-      //tenantScopedFastify.register(authRoutes, { prefix: "/api/v1/auth" });
+      tenantScopedFastify.register(authRoutes, { prefix: "/auth" });
       tenantScopedFastify.register(adminRoutes, { prefix: "/admin" });
     },
     { prefix: "/api/v1" },
   );
 });
-app.register(onboardingRoutes, { prefix: "/api/v1/onboarding" });
+
+app.register(
+  async (onboardingScopedFastify) => {
+    //onboardingScopedFastify.addHook("preHandler", tenantIdentifierMiddleware);
+    onboardingScopedFastify.register(onboardingRoutes, { prefix: "/onboarding" });
+  },
+  { prefix: "/api/v1" },
+);
 
 const start = async () => {
   try {

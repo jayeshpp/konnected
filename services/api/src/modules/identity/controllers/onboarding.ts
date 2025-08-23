@@ -1,6 +1,5 @@
 import { AuthenticatedUser, RegisterOrganizationRequestBody } from "@konnected/types";
 import { FastifyReply, FastifyRequest } from "fastify";
-//import { registerOrganizationSchema } from "../schemas/onboarding";
 import bcrypt from "bcryptjs";
 import { db } from "@konnected/database";
 import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from "@konnected/libs";

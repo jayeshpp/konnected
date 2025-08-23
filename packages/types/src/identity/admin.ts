@@ -1,5 +1,3 @@
-// src/schemas/admin.ts
-
 import { z } from "zod";
 import { buildJsonSchemas } from "fastify-zod";
 
@@ -81,23 +79,18 @@ export const rolePermissionParamsSchema = z.object({
 });
 
 // Build and export all schemas for Fastify
-export const { schemas: adminSchemas, $ref } = buildJsonSchemas(
-  {
-    userIdParamsSchema,
-    userRoleParamsSchema,
-    assignRolesBodySchema,
-    userUpdateBodySchema,
-    adminCreateUserSchema,
-    inviteUserSchema,
-    roleIdParamsSchema,
-    createRoleBodySchema,
-    updateRoleBodySchema,
-    permissionIdParamsSchema,
-    createPermissionBodySchema,
-    assignPermissionsBodySchema,
-    rolePermissionParamsSchema,
-  },
-  {
-    $id: "adminSchemas",
-  },
-);
+export const adminSchemas = {
+  userIdParamsSchema,
+  userRoleParamsSchema,
+  assignRolesBodySchema,
+  userUpdateBodySchema,
+  adminCreateUserSchema,
+  inviteUserSchema,
+  roleIdParamsSchema,
+  createRoleBodySchema,
+  updateRoleBodySchema,
+  permissionIdParamsSchema,
+  createPermissionBodySchema,
+  assignPermissionsBodySchema,
+  rolePermissionParamsSchema,
+};

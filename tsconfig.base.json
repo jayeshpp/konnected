@@ -12,7 +12,8 @@
     "paths": {
       "@konnected/libs": ["packages/libs/src"],
       "@konnected/types": ["packages/types/src"],
-      "@konnected/config": ["packages/config/src"]
+      "@konnected/config": ["packages/config/src"],
+      "@konnected/middlewares": ["packages/middlewares/src"]
     }
   }
 }

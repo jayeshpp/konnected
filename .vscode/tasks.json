@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Docker Build Debug",
+      "type": "shell",
+      "command": "docker build --progress=plain -f services/identity/Dockerfile -t konnected-identity-debug .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always"
+      }
+    }
+  ]
+}

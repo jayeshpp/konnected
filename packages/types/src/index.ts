@@ -1,39 +1,20 @@
-import { FastifyTypeProviderDefault } from "fastify/types/type-provider";
-import { AuthenticatedUser } from "./user";
-import "@fastify/jwt";
-import { JWT } from "@fastify/jwt";
-
-declare module "@fastify/jwt" {
-  interface FastifyJWT {
-    payload: AuthenticatedUser;
-    user: AuthenticatedUser;
-  }
-  interface FastifyJWTPayload extends AuthenticatedUser {}
-}
-
-/**
- * Extends the FastifyRequest interface to include the `user` property
- * which will be populated by the authentication middleware.
- */
-
-declare const fastifyTypeProviderDefault: unique symbol;
-
-declare module "fastify" {
-  interface FastifyRequest {
-    tenantId?: string;
-    user: AuthenticatedUser;
-  }
-
-  // Extend FastifyInstance to include the decorated methods
-  interface FastifyInstance {
-    jwt: JWT;
-    authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
-    authorize: (
-      requiredRoles?: string[],
-    ) => (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
-    [fastifyTypeProviderDefault]: FastifyTypeProviderDefault;
-  }
-}
+import { buildJsonSchemas } from "fastify-zod";
+import { commonSchemas } from "./common";
+import { adminSchemas } from "./identity/admin";
+import { authSchemas } from "./identity/auth";
+import { onboardingSchemas } from "./identity/onboarding";
 
 export * from "./user";
-export type { AuthenticatedUser };
+
+export const allSchemasMap = {
+  ...commonSchemas,
+  ...adminSchemas,
+  ...authSchemas,
+  ...onboardingSchemas,
+};
+
+const { schemas: allSchemas, $ref } = buildJsonSchemas(allSchemasMap, {
+  $id: "allSchemas",
+});
+
+export { allSchemas, $ref };
