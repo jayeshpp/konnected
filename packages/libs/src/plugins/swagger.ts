@@ -12,6 +12,7 @@ export async function setupSwagger(app: FastifyInstance, options: SwaggerOptions
   const { title, description = "", version = "1.0.0" } = options;
   await app.register(fastifySwagger, {
     openapi: {
+      openapi: "3.0.0",
       info: {
         title,
         description,
@@ -36,6 +37,12 @@ export async function setupSwagger(app: FastifyInstance, options: SwaggerOptions
       security: [
         {
           bearerAuth: [],
+        },
+      ],
+      servers: [
+        {
+          url: "http://localhost:5001/api/v1",
+          description: "Local dev server",
         },
       ],
     },

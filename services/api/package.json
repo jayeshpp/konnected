@@ -8,7 +8,7 @@
     "prisma-generate": "pnpm exec prisma generate",
     "dev": "ts-node-dev --respawn --transpile-only --project tsconfig.json ./src/index.ts",
     "build": "tsc",
-    "test:api": "newman run ../../docs/admin-service.postman_collection.json"
+    "export:postman": "../../scripts/swagger-postman.sh"
   },
   "keywords": [],
   "author": "",

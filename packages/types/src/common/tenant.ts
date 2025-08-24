@@ -1,4 +1,3 @@
-import { buildJsonSchemas } from "fastify-zod";
 import { z } from "zod";
 
 export const TenantHeaderSchema = z.object({
@@ -6,12 +5,3 @@ export const TenantHeaderSchema = z.object({
 });
 
 export type TenantHeader = z.infer<typeof TenantHeaderSchema>;
-
-export const { schemas: tenantSchemas, $ref } = buildJsonSchemas(
-  {
-    TenantHeaderSchema,
-  },
-  {
-    $id: "tenantSchemas",
-  },
-);

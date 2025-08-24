@@ -11,7 +11,7 @@ import adminRoutes from "./modules/identity/routes/admin";
 const app = Fastify({ logger: true });
 
 setupSwagger(app, {
-  title: "Konnected Platform API",
+  title: "Travel Planner API",
   description: "API docs for Konnected Platform Services",
   version: "1.0.0",
 });

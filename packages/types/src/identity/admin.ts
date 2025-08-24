@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { buildJsonSchemas } from "fastify-zod";
 
 // Schemas for user management
 export const userIdParamsSchema = z.object({
