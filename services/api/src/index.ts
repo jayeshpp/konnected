@@ -8,6 +8,7 @@ import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod
 import adminRoutes from "./modules/identity/routes/admin";
 import authRoutes from "./modules/identity/routes/auth";
 import onboardingRoutes from "./modules/identity/routes/onboarding";
+import healthRoute from "./modules/common/health.route";
 
 const app = Fastify({
   logger: {
@@ -68,6 +69,7 @@ app.register(
   },
   { prefix: "/api/v1" },
 );
+app.register(healthRoute, { prefix: "/" });
 
 const start = async () => {
   try {
