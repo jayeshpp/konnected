@@ -1,8 +1,8 @@
-import { AuthenticatedUser, RegisterOrganizationRequestBody } from "@konnected/types";
-import { FastifyReply, FastifyRequest } from "fastify";
-import bcrypt from "bcryptjs";
 import { db } from "@konnected/database";
 import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from "@konnected/libs";
+import { AuthenticatedUser, RegisterOrganizationRequestBody } from "@konnected/types";
+import bcrypt from "bcryptjs";
+import { FastifyReply, FastifyRequest } from "fastify";
 
 export const registerOrganization = async (
   req: FastifyRequest<{ Body: RegisterOrganizationRequestBody }>,

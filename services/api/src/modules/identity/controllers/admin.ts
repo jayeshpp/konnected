@@ -1,4 +1,3 @@
-import { FastifyReply, FastifyRequest } from "fastify";
 import { db } from "@konnected/database";
 import {
   InviteUserRequestBody,
@@ -15,6 +14,7 @@ import {
   RolePermissionParams,
 } from "@konnected/types";
 import bcrypt from "bcryptjs";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { nanoid } from "nanoid";
 
 // --- User Management Controllers ---

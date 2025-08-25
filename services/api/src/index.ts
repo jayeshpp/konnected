@@ -1,14 +1,28 @@
-import Fastify from "fastify";
-import { authMiddleware, tenantIdentifierMiddleware } from "@konnected/middlewares";
 import fastifyJwt from "@fastify/jwt";
 import { config } from "@konnected/config";
 import { setupSwagger } from "@konnected/libs";
-import authRoutes from "./modules/identity/routes/auth";
-import { allSchemas } from "@konnected/types";
-import onboardingRoutes from "./modules/identity/routes/onboarding";
-import adminRoutes from "./modules/identity/routes/admin";
+import { authMiddleware, tenantIdentifierMiddleware } from "@konnected/middlewares";
+import Fastify from "fastify";
+import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 
-const app = Fastify({ logger: true });
+import adminRoutes from "./modules/identity/routes/admin";
+import authRoutes from "./modules/identity/routes/auth";
+import onboardingRoutes from "./modules/identity/routes/onboarding";
+
+const app = Fastify({
+  logger: {
+    transport: {
+      target: "pino-pretty",
+      options: {
+        translateTime: "HH:MM:ss Z",
+        ignore: "pid,hostname",
+      },
+    },
+  },
+});
+
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
 
 setupSwagger(app, {
   title: "Travel Planner API",
@@ -25,11 +39,6 @@ app.addHook("preHandler", (req, reply, done) => {
 app.addHook("onRequest", async (request) => {
   console.log("Tenant ID:", request.headers["x-tenant-id"]);
 });
-
-// Register all schemas at the top level
-for (const schema of [...allSchemas]) {
-  app.addSchema(schema);
-}
 
 app.register(fastifyJwt, {
   secret: {

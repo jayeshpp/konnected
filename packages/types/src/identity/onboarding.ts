@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { buildJsonSchemas } from "fastify-zod";
 
 export const registerOrganizationSchema = z
   .object({
@@ -26,6 +25,9 @@ export const registerOrganizationResponseSchema = z
     refreshToken: z.string().describe("JWT refresh token for the admin user"),
   })
   .describe("RegisterOrganizationResponse");
+
+export type RegisterOrganizationRequestBody = z.infer<typeof registerOrganizationSchema>;
+export type RegisterOrganizationResponseBody = z.infer<typeof registerOrganizationResponseSchema>;
 
 export const onboardingSchemas = {
   registerOrganizationSchema,

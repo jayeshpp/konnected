@@ -1,8 +1,8 @@
-import { TenantHeaderSchema } from "./tenant";
+import { HeaderSchema } from "./header";
 
 export * from "./common";
-export * from "./tenant";
+export * from "./header";
 
 export const commonSchemas = {
-  TenantHeaderSchema,
+  HeaderSchema,
 };

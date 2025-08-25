@@ -1,6 +1,8 @@
 import { FastifyPluginAsync } from "fastify";
-import { $ref, LoginRequestBody } from "@konnected/types";
+
 import { login } from "../controllers/auth";
+import { LoginRequestBody, schemas } from "@konnected/types";
+import z from "zod";
 
 const authRoutes: FastifyPluginAsync = async (app) => {
   // POST /api/v1/auth/login
@@ -10,10 +12,10 @@ const authRoutes: FastifyPluginAsync = async (app) => {
       schema: {
         tags: ["Auth"],
         summary: "user login",
-        body: $ref("loginSchema"),
-        headers: $ref("TenantHeaderSchema"),
+        body: schemas.LoginRequestBodySchema,
+        headers: schemas.HeaderSchema,
         response: {
-          200: $ref("loginResponseSchema"),
+          200: z.array(schemas.loginResponseSchema),
         },
         security: [],
       },

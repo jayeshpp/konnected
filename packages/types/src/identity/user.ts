@@ -14,17 +14,6 @@ export const AuthenticatedUserSchema = z.object({
 export type AuthenticatedUser = z.infer<typeof AuthenticatedUserSchema>;
 
 /** -----------------------------
- *  Register Request Body
- * ----------------------------- */
-export const RegisterRequestBodySchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  name: z.string().optional(),
-});
-
-export type RegisterRequestBody = z.infer<typeof RegisterRequestBodySchema>;
-
-/** -----------------------------
  *  Login Request Body
  * ----------------------------- */
 export const LoginRequestBodySchema = z.object({
@@ -42,19 +31,6 @@ export const RefreshTokenRequestBodySchema = z.object({
 });
 
 export type RefreshTokenRequestBody = z.infer<typeof RefreshTokenRequestBodySchema>;
-
-/** -----------------------------
- *  Register Organization Request Body
- * ----------------------------- */
-export const RegisterOrganizationRequestBodySchema = z.object({
-  organizationName: z.string(),
-  organizationSlug: z.string().optional(),
-  adminEmail: z.string().email(),
-  adminPassword: z.string().min(8),
-  adminName: z.string().optional(),
-});
-
-export type RegisterOrganizationRequestBody = z.infer<typeof RegisterOrganizationRequestBodySchema>;
 
 /** -----------------------------
  *  Invite User Request Body
@@ -175,10 +151,8 @@ export type PermissionIdParams = z.infer<typeof PermissionIdParamsSchema>;
 
 export const userSchemas = {
   AuthenticatedUserSchema,
-  RegisterRequestBodySchema,
   LoginRequestBodySchema,
   RefreshTokenRequestBodySchema,
-  RegisterOrganizationRequestBodySchema,
   InviteUserRequestBodySchema,
   AssignRolesRequestBodySchema,
   UserIdParamsSchema,

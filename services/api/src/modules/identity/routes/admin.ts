@@ -1,20 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
-import {
-  RegisterRequestBody,
-  UserIdParams,
-  UserRoleParams,
-  AssignRolesRequestBody,
-  UserUpdateRequestBody,
-  InviteUserRequestBody,
-  CreateRoleRequestBody,
-  RoleIdParams,
-  UpdateRoleRequestBody,
-  CreatePermissionRequestBody,
-  PermissionIdParams,
-  AssignPermissionsRequestBody,
-  RolePermissionParams,
-  $ref,
-} from "@konnected/types";
+
 import {
   getUsers,
   getUserById,
@@ -34,6 +19,8 @@ import {
   assignPermissionsToRole,
   revokePermissionFromRole,
 } from "../controllers/admin";
+import { schemas, UserIdParams } from "@konnected/types";
+import z from "zod";
 
 const adminRoutes: FastifyPluginAsync = async (app) => {
   // All routes here are scoped to the 'admin' role
@@ -57,12 +44,12 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
       schema: {
         tags: ["User"],
         summary: "Get user by ID",
-        params: $ref("userIdParamsSchema"),
+        params: z.array(schemas.userIdParamsSchema),
       },
     },
     getUserById,
   );
-
+  /* 
   app.post<{ Body: RegisterRequestBody & { roleIds?: string[] } }>(
     "/users",
     {
@@ -245,7 +232,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
       },
     },
     revokePermissionFromRole,
-  );
+  ); */
 };
 
 export default adminRoutes;

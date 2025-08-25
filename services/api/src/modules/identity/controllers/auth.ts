@@ -1,12 +1,12 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import bcrypt from "bcryptjs";
 import { db } from "@konnected/database";
-import { AuthenticatedUser, LoginRequestBody, RefreshTokenRequestBody } from "@konnected/types";
 import {
   ACCESS_TOKEN_EXPIRES_IN,
   REFRESH_TOKEN_EXPIRES_IN,
   verifyRefreshToken,
 } from "@konnected/libs";
+import { AuthenticatedUser, LoginRequestBody, RefreshTokenRequestBody } from "@konnected/types";
+import bcrypt from "bcryptjs";
+import { FastifyReply, FastifyRequest } from "fastify";
 
 // POST /api/v1/auth/login
 export const login = async (
