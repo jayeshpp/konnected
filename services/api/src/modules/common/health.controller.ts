@@ -1,4 +1,4 @@
-import { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 
 export const healthController = async (req: FastifyRequest, reply: FastifyReply) => {
   reply.send({
