@@ -1,6 +1,7 @@
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import { FastifyInstance } from "fastify";
+import { jsonSchemaTransform } from "fastify-type-provider-zod";
 
 interface SwaggerOptions {
   title: string;
@@ -46,6 +47,7 @@ export async function setupSwagger(app: FastifyInstance, options: SwaggerOptions
         },
       ],
     },
+    transform: jsonSchemaTransform,
   });
 
   await app.register(fastifySwaggerUI, {

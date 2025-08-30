@@ -1,278 +1,517 @@
 {
-    "item": [
+  "item": [
+    {
+      "name": "auth",
+      "description": "",
+      "item": [
         {
-            "name": "auth",
-            "description": "",
-            "item": [
-                {
-                    "name": "login",
-                    "description": "",
-                    "item": [
-                        {
-                            "id": "bce088a5-aca0-4689-9d95-15685d864252",
-                            "name": "user login",
-                            "request": {
-                                "name": "user login",
-                                "description": {},
-                                "url": {
-                                    "path": [
-                                        "auth",
-                                        "login"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "auth": null
-                            },
-                            "response": [],
-                            "event": [],
-                            "protocolProfileBehavior": {
-                                "disableBodyPruning": true
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "admin",
-            "description": "",
-            "item": [
-                {
-                    "name": "users",
-                    "description": "",
-                    "item": [
-                        {
-                            "id": "888314fe-3971-46bb-9a4d-ceb8f8f3066a",
-                            "name": "Get all users",
-                            "request": {
-                                "name": "Get all users",
-                                "description": {},
-                                "url": {
-                                    "path": [
-                                        "admin",
-                                        "users"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "method": "GET",
-                                "body": {},
-                                "auth": null
-                            },
-                            "response": [
-                                {
-                                    "id": "c7de4924-c9eb-44a2-8fca-db6b448bfa10",
-                                    "name": "Default Response",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "admin",
-                                                "users"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": []
-                                        },
-                                        "header": [
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: bearer",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "Authorization",
-                                                "value": "Bearer <token>"
-                                            }
-                                        ],
-                                        "method": "GET",
-                                        "body": {}
-                                    },
-                                    "status": "OK",
-                                    "code": 200,
-                                    "header": [],
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "text"
-                                }
-                            ],
-                            "event": [],
-                            "protocolProfileBehavior": {
-                                "disableBodyPruning": true
-                            }
-                        },
-                        {
-                            "name": "{id}",
-                            "description": "",
-                            "item": [
-                                {
-                                    "id": "e9f658e9-20fd-486e-9013-36e63b4491e7",
-                                    "name": "Get user by ID",
-                                    "request": {
-                                        "name": "Get user by ID",
-                                        "description": {},
-                                        "url": {
-                                            "path": [
-                                                "admin",
-                                                "users",
-                                                ":id"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "type": "any",
-                                                    "value": "<string>",
-                                                    "key": "id",
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        "method": "GET",
-                                        "body": {},
-                                        "auth": null
-                                    },
-                                    "response": [
-                                        {
-                                            "id": "365cb5e9-3b8c-4891-8003-07329fb465c8",
-                                            "name": "Default Response",
-                                            "originalRequest": {
-                                                "url": {
-                                                    "path": [
-                                                        "admin",
-                                                        "users",
-                                                        ":id"
-                                                    ],
-                                                    "host": [
-                                                        "{{baseUrl}}"
-                                                    ],
-                                                    "query": [],
-                                                    "variable": []
-                                                },
-                                                "header": [
-                                                    {
-                                                        "description": {
-                                                            "content": "Added as a part of security scheme: bearer",
-                                                            "type": "text/plain"
-                                                        },
-                                                        "key": "Authorization",
-                                                        "value": "Bearer <token>"
-                                                    }
-                                                ],
-                                                "method": "GET",
-                                                "body": {}
-                                            },
-                                            "status": "OK",
-                                            "code": 200,
-                                            "header": [],
-                                            "cookie": [],
-                                            "_postman_previewlanguage": "text"
-                                        }
-                                    ],
-                                    "event": [],
-                                    "protocolProfileBehavior": {
-                                        "disableBodyPruning": true
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "onboarding",
-            "description": "",
-            "item": [
-                {
-                    "name": "register-organization",
-                    "description": "",
-                    "item": [
-                        {
-                            "id": "a0f27ad5-e951-48c5-accf-62a6d2cdcaa9",
-                            "name": "Register a new organization and admin user",
-                            "request": {
-                                "name": "Register a new organization and admin user",
-                                "description": {},
-                                "url": {
-                                    "path": [
-                                        "onboarding",
-                                        "register-organization"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "method": "POST",
-                                "body": {},
-                                "auth": null
-                            },
-                            "response": [],
-                            "event": [],
-                            "protocolProfileBehavior": {
-                                "disableBodyPruning": true
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ],
-    "auth": {
-        "type": "bearer",
-        "bearer": [
+          "name": "login",
+          "description": "",
+          "item": [
             {
-                "type": "any",
-                "value": "{{bearerToken}}",
-                "key": "token"
+              "id": "473d8a05-a0f3-4649-ba47-37e4a16e99be",
+              "name": "user login",
+              "request": {
+                "name": "user login",
+                "description": {},
+                "url": {
+                  "path": [
+                    "auth",
+                    "login"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": {
+                      "content": "(Required) ",
+                      "type": "text/plain"
+                    },
+                    "key": "x-tenant-id",
+                    "value": "{{tenantId}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "auth": null
+              },
+              "response": [
+                {
+                  "id": "e1a1c12e-9dcc-485f-b58c-16d972cad454",
+                  "name": "Default Response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "auth",
+                        "login"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "disabled": false,
+                        "description": {
+                          "content": "(Required) ",
+                          "type": "text/plain"
+                        },
+                        "key": "x-tenant-id",
+                        "value": "{{tenantId}}"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"accessToken\": \"<string>\",\n  \"refreshToken\": \"<string>\",\n  \"user\": {\n    \"id\": \"CTZ\\\\~HL={y(yv?Y:JK|\",\n    \"email\": \"Si@WB-AitM1NJU.Qajsd8C.iGygVZK\",\n    \"roles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"name\": \"<string>\"\n  }\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
             }
-        ]
+          ]
+        }
+      ]
     },
-    "event": [],
-    "variable": [
+    {
+      "name": "admin",
+      "description": "",
+      "item": [
         {
-            "key": "baseUrl",
-            "value": "http://localhost:5001/api/v1"
+          "name": "users",
+          "description": "",
+          "item": [
+            {
+              "id": "42cb58af-7d35-49b1-bc43-d1b82ca52809",
+              "name": "Get all users",
+              "request": {
+                "name": "Get all users",
+                "description": {},
+                "url": {
+                  "path": [
+                    "admin",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {},
+                "auth": null
+              },
+              "response": [
+                {
+                  "id": "252caf73-fc5f-4e31-bc28-78410ec53c63",
+                  "name": "Default Response",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "admin",
+                        "users"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [],
+                  "cookie": [],
+                  "_postman_previewlanguage": "text"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            },
+            {
+              "name": "{id}",
+              "description": "",
+              "item": [
+                {
+                  "id": "7159dc73-f4e8-411a-9349-397e841883f8",
+                  "name": "Get user by ID",
+                  "request": {
+                    "name": "Get user by ID",
+                    "description": {},
+                    "url": {
+                      "path": [
+                        "admin",
+                        "users",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "value": "caQ3|+boc$Oxb<a.",
+                          "key": "id",
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          }
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "body": {},
+                    "auth": null
+                  },
+                  "response": [
+                    {
+                      "id": "6fa3551b-74a8-41ff-9312-db58109f839c",
+                      "name": "Default Response",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "admin",
+                            "users",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": []
+                        },
+                        "header": [
+                          {
+                            "description": {
+                              "content": "Added as a part of security scheme: bearer",
+                              "type": "text/plain"
+                            },
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "method": "GET",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [],
+                      "cookie": [],
+                      "_postman_previewlanguage": "text"
+                    }
+                  ],
+                  "event": [],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  }
+                }
+              ]
+            }
+          ]
         }
-    ],
-    "info": {
-        "_postman_id": "8f7e1028-9ab2-4a6c-8630-fd100de7139f",
-        "name": "Travel Planner API",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        "description": {
-            "content": "API docs for Konnected Platform Services",
-            "type": "text/plain"
+      ]
+    },
+    {
+      "name": "onboarding",
+      "description": "",
+      "item": [
+        {
+          "name": "register-organization",
+          "description": "",
+          "item": [
+            {
+              "id": "be03862d-d70e-47b1-9d72-3077d434dbea",
+              "name": "Register a new organization and admin user",
+              "request": {
+                "name": "Register a new organization and admin user",
+                "description": {},
+                "url": {
+                  "path": [
+                    "onboarding",
+                    "register-organization"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationName\": \"<string>\",\n  \"organizationSlug\": \"gggg\",\n  \"adminEmail\": \"y@diMiTq.mOpvTID.TQsuja2.3C5u3qS8nFR.rrl1HUcmF.kiBa\",\n  \"adminPassword\": \"<string>\",\n  \"adminName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "auth": null
+              },
+              "response": [
+                {
+                  "id": "4fe14bdd-5e2b-47bb-887b-123efa7b1f9a",
+                  "name": "RegisterOrganizationResponse",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "onboarding",
+                        "register-organization"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: bearer",
+                          "type": "text/plain"
+                        },
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"organizationName\": \"<string>\",\n  \"organizationSlug\": \"gggg\",\n  \"adminEmail\": \"y@diMiTq.mOpvTID.TQsuja2.3C5u3qS8nFR.rrl1HUcmF.kiBa\",\n  \"adminPassword\": \"<string>\",\n  \"adminName\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"message\": \"Organization registered successfully. Admin user created.\",\n  \"tenantId\": \"00000000-0000-0000-0000-000000000000\",\n  \"adminUserId\": \"67D1Cec7-d9ce-248a-bB4e-E9D8db3fA067\",\n  \"accessToken\": \"<string>\",\n  \"refreshToken\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            }
+          ]
         }
+      ]
+    },
+    {
+      "name": "health",
+      "description": "",
+      "item": [
+        {
+          "id": "c17eb804-fb4f-4a80-aa98-32c742b4bad3",
+          "name": "Health check",
+          "request": {
+            "name": "Health check",
+            "description": {},
+            "url": {
+              "path": [
+                "health"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {},
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cc4c0e61-3ae2-4eaf-8efb-0fac0bc0e947",
+              "name": "Default Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"uptime\": \"<number>\",\n  \"timestamp\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
     }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "type": "any",
+        "value": "{{bearerToken}}",
+        "key": "token"
+      }
+    ]
+  },
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5001/api/v1"
+    }
+  ],
+  "info": {
+    "_postman_id": "d8a08f1e-0954-48d3-9348-a344be8254f1",
+    "name": "Travel Planner API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API docs for Konnected Platform Services",
+      "type": "text/plain"
+    }
+  }
 }

@@ -22,7 +22,7 @@ const authMiddleware = (requiredRoles: string[] = []) => {
     try {
       // Multi-tenancy: Assume tenantId is already present on request
       // This check is now handled by `tenantIdentifierMiddleware`
-      const tenantId = request.tenantId;
+      const tenantId = request.headers["x-tenant-id"] as string;
       // No need for `if (!tenantId)` check here, as `tenantIdentifierMiddleware` ensures its presence
       // for routes where it's applied. If it's not applied, this middleware won't run correctly.
 

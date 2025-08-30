@@ -1,7 +1,7 @@
 import fastifyJwt from "@fastify/jwt";
 import { config } from "@konnected/config";
 import { setupSwagger } from "@konnected/libs";
-import { authMiddleware, tenantIdentifierMiddleware } from "@konnected/middlewares";
+import { authMiddleware, tenantIdentifierMiddleware } from "./middlewares";
 import Fastify from "fastify";
 import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 
@@ -9,6 +9,7 @@ import adminRoutes from "./modules/identity/routes/admin";
 import authRoutes from "./modules/identity/routes/auth";
 import onboardingRoutes from "./modules/identity/routes/onboarding";
 import healthRoute from "./modules/common/health.route";
+import { registerSchemas } from "./plugins/registerSchemas";
 
 const app = Fastify({
   logger: {
@@ -21,6 +22,8 @@ const app = Fastify({
     },
   },
 });
+
+registerSchemas(app);
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
@@ -64,12 +67,11 @@ app.register(async (fastify) => {
 
 app.register(
   async (onboardingScopedFastify) => {
-    //onboardingScopedFastify.addHook("preHandler", tenantIdentifierMiddleware);
     onboardingScopedFastify.register(onboardingRoutes, { prefix: "/onboarding" });
   },
   { prefix: "/api/v1" },
 );
-app.register(healthRoute, { prefix: "/" });
+app.register(healthRoute, { prefix: "/api/v1" });
 
 const start = async () => {
   try {

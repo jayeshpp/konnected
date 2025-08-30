@@ -3,7 +3,6 @@
   "references": [
     { "path": "packages/types" },
     { "path": "packages/libs" },
-    { "path": "packages/config" },
-    { "path": "packages/middlewares" }
+    { "path": "packages/config" }
   ]
 }

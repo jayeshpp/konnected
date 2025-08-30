@@ -19,8 +19,7 @@ import {
   assignPermissionsToRole,
   revokePermissionFromRole,
 } from "../controllers/admin";
-import { schemas, UserIdParams } from "@konnected/types";
-import z from "zod";
+import { HeaderSchema, UserIdParams, userIdParamsSchema } from "@konnected/types";
 
 const adminRoutes: FastifyPluginAsync = async (app) => {
   // All routes here are scoped to the 'admin' role
@@ -32,6 +31,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     {
       schema: {
         tags: ["User"],
+        headers: HeaderSchema,
         summary: "Get all users",
       },
     },
@@ -43,8 +43,9 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     {
       schema: {
         tags: ["User"],
+        headers: HeaderSchema,
         summary: "Get user by ID",
-        params: z.array(schemas.userIdParamsSchema),
+        params: userIdParamsSchema,
       },
     },
     getUserById,

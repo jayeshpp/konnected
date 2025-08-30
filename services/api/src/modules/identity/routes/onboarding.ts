@@ -1,8 +1,11 @@
 import { FastifyPluginAsync } from "fastify";
 
 import { registerOrganization } from "../controllers/onboarding";
-import { RegisterOrganizationRequestBody, schemas } from "@konnected/types";
-import z from "zod";
+import {
+  RegisterOrganizationRequestBody,
+  registerOrganizationResponseSchema,
+  registerOrganizationSchema,
+} from "@konnected/types";
 
 const onboardingRoutes: FastifyPluginAsync = async (app) => {
   // POST /api/v1/onboarding/register-organization
@@ -12,9 +15,9 @@ const onboardingRoutes: FastifyPluginAsync = async (app) => {
       schema: {
         tags: ["Onboarding"],
         summary: "Register a new organization and admin user",
-        body: schemas.RegisterOrganizationRequestBody,
+        body: registerOrganizationSchema,
         response: {
-          200: z.array(schemas.RegisterOrganizationResponseBody),
+          200: registerOrganizationResponseSchema,
         },
         security: [],
       },

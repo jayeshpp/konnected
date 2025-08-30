@@ -15,7 +15,7 @@ declare module "fastify" {
 const tenantIdentifierMiddleware = async (request: FastifyRequest, reply: FastifyReply) => {
   const tenantIdFromHeader = request.headers["x-tenant-id"] as string;
 
-  if (!tenantIdFromHeader) {
+  if (!tenantIdFromHeader || tenantIdFromHeader === "{{tenantId}}") {
     reply.status(400).send({ error: "Bad Request", message: "X-Tenant-ID header is required." });
     return;
   }
