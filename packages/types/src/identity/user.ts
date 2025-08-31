@@ -43,6 +43,12 @@ export const InviteUserRequestBodySchema = z.object({
 
 export type InviteUserRequestBody = z.infer<typeof InviteUserRequestBodySchema>;
 
+export const bulkInviteSchema = z.object({
+  users: z.array(InviteUserRequestBodySchema).min(1, "At least one invite is required"),
+});
+
+export type InviteBulkUserRequestBody = z.infer<typeof bulkInviteSchema>;
+
 /** -----------------------------
  *  Assign Roles Request Body
  * ----------------------------- */
@@ -51,25 +57,6 @@ export const AssignRolesRequestBodySchema = z.object({
 });
 
 export type AssignRolesRequestBody = z.infer<typeof AssignRolesRequestBodySchema>;
-
-/** -----------------------------
- *  User ID Params
- * ----------------------------- */
-export const UserIdParamsSchema = z.object({
-  id: z.string(),
-});
-
-export type UserIdParams = z.infer<typeof UserIdParamsSchema>;
-
-/** -----------------------------
- *  User Role Params
- * ----------------------------- */
-export const UserRoleParamsSchema = z.object({
-  userId: z.string(),
-  roleId: z.string(),
-});
-
-export type UserRoleParams = z.infer<typeof UserRoleParamsSchema>;
 
 /** -----------------------------
  *  User Update Request Body
@@ -103,15 +90,6 @@ export const UpdateRoleRequestBodySchema = z.object({
 export type UpdateRoleRequestBody = z.infer<typeof UpdateRoleRequestBodySchema>;
 
 /** -----------------------------
- *  Role ID Params
- * ----------------------------- */
-export const RoleIdParamsSchema = z.object({
-  id: z.string(),
-});
-
-export type RoleIdParams = z.infer<typeof RoleIdParamsSchema>;
-
-/** -----------------------------
  *  Assign Permissions Request Body
  * ----------------------------- */
 export const AssignPermissionsRequestBodySchema = z.object({
@@ -119,16 +97,6 @@ export const AssignPermissionsRequestBodySchema = z.object({
 });
 
 export type AssignPermissionsRequestBody = z.infer<typeof AssignPermissionsRequestBodySchema>;
-
-/** -----------------------------
- *  Role Permission Params
- * ----------------------------- */
-export const RolePermissionParamsSchema = z.object({
-  roleId: z.string(),
-  permissionId: z.string(),
-});
-
-export type RolePermissionParams = z.infer<typeof RolePermissionParamsSchema>;
 
 /** -----------------------------
  *  Create Permission Request Body
@@ -140,14 +108,11 @@ export const CreatePermissionRequestBodySchema = z.object({
 
 export type CreatePermissionRequestBody = z.infer<typeof CreatePermissionRequestBodySchema>;
 
-/** -----------------------------
- *  Permission ID Params
- * ----------------------------- */
-export const PermissionIdParamsSchema = z.object({
-  id: z.string(),
+export const bulkInviteUsersSchema = z.object({
+  users: z.array(InviteUserRequestBodySchema).min(1, "At least one invite is required"),
 });
 
-export type PermissionIdParams = z.infer<typeof PermissionIdParamsSchema>;
+export type BulkInviteUsers = z.infer<typeof bulkInviteUsersSchema>;
 
 export const userSchemas = {
   AuthenticatedUserSchema,
@@ -155,14 +120,9 @@ export const userSchemas = {
   RefreshTokenRequestBodySchema,
   InviteUserRequestBodySchema,
   AssignRolesRequestBodySchema,
-  UserIdParamsSchema,
-  UserRoleParamsSchema,
   UserUpdateRequestBodySchema,
   CreateRoleRequestBodySchema,
   UpdateRoleRequestBodySchema,
-  RoleIdParamsSchema,
   AssignPermissionsRequestBodySchema,
-  RolePermissionParamsSchema,
   CreatePermissionRequestBodySchema,
-  PermissionIdParamsSchema,
 };

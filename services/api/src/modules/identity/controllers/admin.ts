@@ -14,6 +14,7 @@ import {
   AssignPermissionsRequestBody,
   RolePermissionParams,
   AdminCreateUserBody,
+  InviteBulkUserRequestBody,
 } from "@konnected/types";
 import bcrypt from "bcryptjs";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -232,6 +233,110 @@ export const inviteUser = async (
     req.log.error("Error sending invitation:", error);
     reply.status(500).send({ message: "Internal Server Error." });
   }
+};
+
+export const bulkInviteUsers = async (
+  req: FastifyRequest<{ Body: InviteBulkUserRequestBody }>,
+  reply: FastifyReply,
+) => {
+  const { users } = req.body;
+  const tenantId = req.tenantId as string;
+  const invitedByUserId = req.user?.id;
+
+  // Collect all unique roleIds from the bulk request
+  const allRoleIds = Array.from(new Set(users.flatMap((i) => i.roleIds ?? [])));
+
+  // Validate roles belong to tenant
+  const validRoles = await db.role.findMany({
+    where: { id: { in: allRoleIds }, tenantId },
+    select: { id: true },
+  });
+
+  const validRoleIds = new Set(validRoles.map((r) => r.id));
+
+  // Check invalid roles
+  const invalidRoles = allRoleIds.filter((rid) => !validRoleIds.has(rid));
+  if (invalidRoles.length > 0) {
+    return reply.status(400).send({
+      message: "One or more provided role IDs are invalid or do not belong to this tenant.",
+      invalidRoles,
+    });
+  }
+  const results: Array<{ email: string; status: string; message: string }> = [];
+
+  for (const { email, name, roleIds } of req.body.users) {
+    try {
+      if (!invitedByUserId) {
+        return reply.status(401).send({ message: "Inviting user not authenticated." });
+      }
+
+      const existingUser = await db.user.findUnique({
+        where: { email_tenantId: { email, tenantId } },
+      });
+      if (existingUser) {
+        results.push({
+          email,
+          status: "already_exists",
+          message: `User already exists`,
+        });
+        continue;
+      }
+
+      const existingInvitation = await db.invitation.findUnique({
+        where: { email_tenantId: { email, tenantId } },
+      });
+      if (
+        existingInvitation &&
+        existingInvitation.status === "PENDING" &&
+        existingInvitation.expiresAt > new Date()
+      ) {
+        results.push({
+          email,
+          status: "already_exists",
+          message: `An invitation has already been sent to this user`,
+        });
+        continue;
+      }
+
+      const invitationToken = nanoid(32);
+
+      await db.invitation.upsert({
+        where: { email_tenantId: { email, tenantId } },
+        update: {
+          token: invitationToken,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          status: "PENDING",
+          invitedByUserId: invitedByUserId,
+        },
+        create: {
+          email,
+          tenantId,
+          token: invitationToken,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          invitedByUserId: invitedByUserId,
+          status: "PENDING",
+        },
+      });
+
+      await sendEmail("inviteUser", {
+        to: email,
+        subject: "You’ve been invited to join Konnected",
+        variables: {
+          name,
+          inviteUrl: `${process.env.FRONTEND_URL}/invite/accept?token=${invitationToken}`,
+          orgName: "Acme Inc.",
+        },
+      });
+
+      req.log.info(`Invitation sent to ${email} for tenant ${tenantId}. Token: ${invitationToken}`);
+
+      results.push({ email, status: "invited", message: "Invitation sent" });
+    } catch (error) {
+      req.log.error(`Error inviting ${email}:`, error);
+      results.push({ email, status: "failed", message: "Unexpected error" });
+    }
+  }
+  return reply.status(202).send({ results });
 };
 
 export const updateAdminUser = async (

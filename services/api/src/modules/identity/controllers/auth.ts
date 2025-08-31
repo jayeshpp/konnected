@@ -91,7 +91,7 @@ export const login = async (
           httpOnly: true,
           secure: config.NODE_ENV === "production",
           sameSite: "lax",
-          maxAge: 60 * 15, // 15 min
+          maxAge: 60 * 60 * 3, // 3 hrs
         })
         .setCookie("refreshToken", refreshToken, {
           path: "/",

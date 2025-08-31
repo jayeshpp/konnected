@@ -18,11 +18,15 @@ import {
   deletePermission,
   assignPermissionsToRole,
   revokePermissionFromRole,
+  bulkInviteUsers,
 } from "../controllers/admin";
 import {
   AdminCreateUserBody,
   adminCreateUserSchema,
+  bulkInviteSchema,
+  bulkInviteUsersSchema,
   HeaderSchema,
+  InviteBulkUserRequestBody,
   InviteUserRequestBody,
   inviteUserSchema,
   UserIdParams,
@@ -83,6 +87,18 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
       },
     },
     inviteUser,
+  );
+  app.post<{ Body: InviteBulkUserRequestBody }>(
+    "/users/bulk-invite",
+    {
+      schema: {
+        tags: ["User"],
+        headers: HeaderSchema,
+        summary: "Invite multiple users via a list of emails",
+        body: bulkInviteSchema,
+      },
+    },
+    bulkInviteUsers,
   );
   /*
   app.put<{ Params: UserIdParams; Body: UserUpdateRequestBody }>(
