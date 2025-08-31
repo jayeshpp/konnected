@@ -49,6 +49,20 @@ export const bulkInviteSchema = z.object({
 
 export type InviteBulkUserRequestBody = z.infer<typeof bulkInviteSchema>;
 
+export const acceptInvitationSchema = z.object({
+  token: z.string().min(1, "Invitation token is required"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  name: z.string().optional(),
+});
+
+export type AcceptInvitation = z.infer<typeof acceptInvitationSchema>;
+
+export const declineInvitationSchema = z.object({
+  token: z.string().min(1, "Invitation token is required"),
+});
+
+export type DeclineInvitation = z.infer<typeof declineInvitationSchema>;
+
 /** -----------------------------
  *  Assign Roles Request Body
  * ----------------------------- */

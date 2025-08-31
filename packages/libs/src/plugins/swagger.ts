@@ -25,6 +25,7 @@ export async function setupSwagger(app: FastifyInstance, options: SwaggerOptions
         { name: "Role", description: "Role related end-points" },
         { name: "Permission", description: "Permission related end-points" },
         { name: "Auth", description: "Auth related end-points" },
+        { name: "Admin", description: "Admin related end-points" },
       ],
       components: {
         securitySchemes: {

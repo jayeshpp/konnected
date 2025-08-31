@@ -42,7 +42,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users",
     {
       schema: {
-        tags: ["User"],
+        tags: ["Admin"],
         headers: HeaderSchema,
         summary: "Get all users",
       },
@@ -54,7 +54,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/:id",
     {
       schema: {
-        tags: ["User"],
+        tags: ["Admin"],
         headers: HeaderSchema,
         summary: "Get user by ID",
         params: userIdParamsSchema,
@@ -67,7 +67,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users",
     {
       schema: {
-        tags: ["User"],
+        tags: ["Admin"],
         headers: HeaderSchema,
         summary: "Create a new admin user",
         body: adminCreateUserSchema,
@@ -80,7 +80,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/invite",
     {
       schema: {
-        tags: ["User"],
+        tags: ["Admin"],
         headers: HeaderSchema,
         summary: "Invite a user via email",
         body: inviteUserSchema,
@@ -89,10 +89,10 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     inviteUser,
   );
   app.post<{ Body: InviteBulkUserRequestBody }>(
-    "/users/bulk-invite",
+    "/users/invite/bulk",
     {
       schema: {
-        tags: ["User"],
+        tags: ["Admin"],
         headers: HeaderSchema,
         summary: "Invite multiple users via a list of emails",
         body: bulkInviteSchema,
@@ -105,7 +105,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/:id",
     {
       schema: {
-        tags: ["User"],
+        tags: ["Admin"],
         summary: "Update user details",
         params: $ref("userIdParamsSchema"),
         body: $ref("userUpdateBodySchema"),
@@ -118,7 +118,7 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     "/users/:id",
     {
       schema: {
-        tags: ["User"],
+        tags: ["Admin"],
         summary: "Delete user by ID",
         params: $ref("userIdParamsSchema"),
       },

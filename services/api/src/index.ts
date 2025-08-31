@@ -9,6 +9,7 @@ import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod
 import adminRoutes from "./modules/identity/routes/admin";
 import authRoutes from "./modules/identity/routes/auth";
 import onboardingRoutes from "./modules/identity/routes/onboarding";
+import invitationRoutes from "./modules/identity/routes/invitation";
 import healthRoute from "./modules/common/health.route";
 import { registerSchemas } from "./plugins/registerSchemas";
 
@@ -54,6 +55,7 @@ app.register(fastifyJwt, {
   },
 });
 
+//private routes with roles
 app.register(async (fastify) => {
   fastify.decorate("authenticate", authMiddleware());
   fastify.decorate("authorize", authMiddleware);
@@ -68,8 +70,10 @@ app.register(async (fastify) => {
   );
 });
 
+//public routes
 app.register(
   async (onboardingScopedFastify) => {
+    onboardingScopedFastify.register(invitationRoutes, { prefix: "/invitation" });
     onboardingScopedFastify.register(onboardingRoutes, { prefix: "/onboarding" });
   },
   { prefix: "/api/v1" },
