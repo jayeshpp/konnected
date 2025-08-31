@@ -1,3 +1,4 @@
+import { config } from "@konnected/config";
 import { db } from "@konnected/database";
 import {
   ACCESS_TOKEN_EXPIRES_IN,
@@ -69,16 +70,47 @@ export const login = async (
       },
     });
 
-    reply.send({
-      accessToken,
-      refreshToken,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        roles: userRoles,
-      },
-    });
+    const isMobileClient = req.clientType;
+
+    if (isMobileClient) {
+      reply.send({
+        accessToken,
+        refreshToken,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          roles: userRoles,
+        },
+      });
+    } else {
+      // Set tokens in HTTP-only cookies for web
+      reply
+        .setCookie("accessToken", accessToken, {
+          path: "/",
+          httpOnly: true,
+          secure: config.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 15, // 15 min
+        })
+        .setCookie("refreshToken", refreshToken, {
+          path: "/",
+          httpOnly: true,
+          secure: config.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+        })
+        .send({
+          accessToken,
+          refreshToken,
+          user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            roles: userRoles,
+          },
+        });
+    }
   } catch (error) {
     req.log.error("Error during login:", error);
     reply.status(500).send({ message: "Internal Server Error." });

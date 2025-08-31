@@ -1,0 +1,26 @@
+<mjml>
+  <mj-body background-color="#f9f9f9">
+    <mj-include path="./partials/header.mjml" />
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-text font-size="20px" color="#333" font-weight="bold">
+          You’ve been invited to join {{ orgName }} on Konnected!
+        </mj-text>
+
+        <mj-text>
+          Hi {{ name }},<br />
+          You’ve been invited to Konnected
+        </mj-text>
+
+        <mj-button href="{{inviteUrl}}" background-color="#007bff" color="white" padding="20px">
+          Accept Invitation
+        </mj-button>
+
+        <mj-text font-size="14px" color="#555">
+          If you didn’t expect this email, you can ignore it.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-include path="./partials/footer.mjml" />
+  </mj-body>
+</mjml>

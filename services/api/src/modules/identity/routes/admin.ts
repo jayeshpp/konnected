@@ -19,7 +19,15 @@ import {
   assignPermissionsToRole,
   revokePermissionFromRole,
 } from "../controllers/admin";
-import { HeaderSchema, UserIdParams, userIdParamsSchema } from "@konnected/types";
+import {
+  AdminCreateUserBody,
+  adminCreateUserSchema,
+  HeaderSchema,
+  InviteUserRequestBody,
+  inviteUserSchema,
+  UserIdParams,
+  userIdParamsSchema,
+} from "@konnected/types";
 
 const adminRoutes: FastifyPluginAsync = async (app) => {
   // All routes here are scoped to the 'admin' role
@@ -50,14 +58,15 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     },
     getUserById,
   );
-  /* 
-  app.post<{ Body: RegisterRequestBody & { roleIds?: string[] } }>(
+
+  app.post<{ Body: AdminCreateUserBody & { roleIds?: string[] } }>(
     "/users",
     {
       schema: {
         tags: ["User"],
+        headers: HeaderSchema,
         summary: "Create a new admin user",
-        body: $ref("adminCreateUserSchema"),
+        body: adminCreateUserSchema,
       },
     },
     createAdminUser,
@@ -68,13 +77,14 @@ const adminRoutes: FastifyPluginAsync = async (app) => {
     {
       schema: {
         tags: ["User"],
+        headers: HeaderSchema,
         summary: "Invite a user via email",
-        body: $ref("inviteUserSchema"),
+        body: inviteUserSchema,
       },
     },
     inviteUser,
   );
-
+  /*
   app.put<{ Params: UserIdParams; Body: UserUpdateRequestBody }>(
     "/users/:id",
     {

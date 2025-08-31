@@ -1,4 +1,5 @@
 import { db } from "@konnected/database";
+import { sendEmail } from "@konnected/email";
 import {
   InviteUserRequestBody,
   UserIdParams,
@@ -12,6 +13,7 @@ import {
   PermissionIdParams,
   AssignPermissionsRequestBody,
   RolePermissionParams,
+  AdminCreateUserBody,
 } from "@konnected/types";
 import bcrypt from "bcryptjs";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -83,7 +85,7 @@ export const getUserById = async (
 };
 
 export const createAdminUser = async (
-  req: FastifyRequest<{ Body: InviteUserRequestBody & { password?: string } }>,
+  req: FastifyRequest<{ Body: AdminCreateUserBody }>,
   reply: FastifyReply,
 ) => {
   try {
@@ -210,6 +212,16 @@ export const inviteUser = async (
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         invitedByUserId: invitedByUserId,
         status: "PENDING",
+      },
+    });
+
+    await sendEmail("inviteUser", {
+      to: email,
+      subject: "You’ve been invited to join Konnected",
+      variables: {
+        name,
+        inviteUrl: `${process.env.FRONTEND_URL}/invite/accept?token=${invitationToken}`,
+        orgName: "Acme Inc.",
       },
     });
 

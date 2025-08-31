@@ -1,0 +1,7 @@
+<mj-section background-color="#007bff" padding="10px 25px">
+  <mj-column>
+    <mj-text align="center" color="#ffffff" font-size="20px" font-weight="bold">
+      Konnected
+    </mj-text>
+  </mj-column>
+</mj-section>

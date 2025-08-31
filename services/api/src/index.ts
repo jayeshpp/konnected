@@ -3,6 +3,7 @@ import { config } from "@konnected/config";
 import { setupSwagger } from "@konnected/libs";
 import { authMiddleware, tenantIdentifierMiddleware } from "./middlewares";
 import Fastify from "fastify";
+import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 
 import adminRoutes from "./modules/identity/routes/admin";
@@ -43,6 +44,8 @@ app.addHook("preHandler", (req, reply, done) => {
 app.addHook("onRequest", async (request) => {
   console.log("Tenant ID:", request.headers["x-tenant-id"]);
 });
+
+app.register(cookie);
 
 app.register(fastifyJwt, {
   secret: {

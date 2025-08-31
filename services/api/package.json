@@ -21,11 +21,13 @@
     "prisma": "^6.11.1"
   },
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
     "@fastify/jwt": "^9.1.0",
     "@fastify/swagger": "^9.5.1",
     "@fastify/swagger-ui": "^5.2.3",
     "@konnected/config": "workspace:^",
     "@konnected/database": "workspace:*",
+    "@konnected/email": "workspace:^",
     "@konnected/libs": "workspace:^",
     "@konnected/types": "workspace:^",
     "@prisma/client": "^6.7.0",
