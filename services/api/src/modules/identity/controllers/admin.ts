@@ -1,3 +1,4 @@
+import { config } from "@konnected/config";
 import { db } from "@konnected/database";
 import { sendEmail } from "@konnected/email";
 import {
@@ -216,13 +217,18 @@ export const inviteUser = async (
       },
     });
 
+    const tenant = await db.tenant.findUnique({
+      where: { id: tenantId },
+      select: { name: true },
+    });
+
     await sendEmail("inviteUser", {
       to: email,
       subject: "You’ve been invited to join Konnected",
       variables: {
         name,
-        inviteUrl: `${process.env.FRONTEND_URL}/invite/accept?token=${invitationToken}`,
-        orgName: "Acme Inc.",
+        inviteUrl: `${config.DOMAIN_BASE_URL}/invite/accept?token=${invitationToken}`,
+        orgName: tenant?.name,
       },
     });
 
@@ -263,6 +269,11 @@ export const bulkInviteUsers = async (
     });
   }
   const results: Array<{ email: string; status: string; message: string }> = [];
+
+  const tenant = await db.tenant.findUnique({
+    where: { id: tenantId },
+    select: { name: true },
+  });
 
   for (const { email, name, roleIds } of req.body.users) {
     try {
@@ -323,8 +334,8 @@ export const bulkInviteUsers = async (
         subject: "You’ve been invited to join Konnected",
         variables: {
           name,
-          inviteUrl: `${process.env.FRONTEND_URL}/invite/accept?token=${invitationToken}`,
-          orgName: "Acme Inc.",
+          inviteUrl: `${config.DOMAIN_BASE_URL}/invite/accept?token=${invitationToken}`,
+          orgName: tenant?.name,
         },
       });
 
